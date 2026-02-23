@@ -33,6 +33,17 @@ pip install -r requirements.txt
 ### Dataset
 CC3M dataset needed(https://ai.google.com/research/ConceptualCaptions/)
 
+### 国内环境一键准备 CC3M（下载+清洗+生成训练 CSV）
+```bash
+python -u utils/tools/prepare_cc3m_cn.py \
+  --hf-endpoint https://hf-mirror.com \
+  --target-count 10000 \
+  --image-dir /mnt/zfs/tang/0_MMCL/BadCLIP-master/data/GCC_Training500K/cc3m \
+  --csv-path /mnt/zfs/tang/0_MMCL/BadCLIP-master/data/GCC_Training500K/cc3m_natural_10K_WObanana.csv
+```
+
+脚本特性：失败重试、坏图过滤（不可读/分辨率过小）、自动排除 caption 含 `banana` 的样本。
+
 ## Optimize Patch
 ```
 python -u src/embeding_optimize_patch.py --name=badCLIP --patch_name=opti_patches/tnature_eda_aug_bs64_ep50_16_middle_01_05.jpg --patch_size=16 --patch_location=middle --eda_prob=0.1 --aug_prob=0.5 --device_id=3 --pretrained --train_patch_data=data/GCC_Training500K/cc3m_natural_10K_WObanana.csv --batch_size=64 --epochs=50 --prog=2
